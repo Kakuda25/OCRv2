@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(100)
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  categoryId  Int?     @map("category_id")
+  productCode String   @unique @map("product_code") @db.VarChar(50)
+  name        String   @db.VarChar(255)
+  description String?  @db.Text
+  price       Decimal  @db.Decimal(10, 2)
+  status      String   @default("active") @db.VarChar(20)
+  imageUrl    String?  @map("image_url") @db.VarChar(500)
+  weightKg    Decimal? @map("weight_kg") @db.Decimal(8, 2)
+  dimensions  String?  @db.VarChar(100)
+  // Gemini 3.0 Flash / text-embedding-004 は 768次元
+  embedding   Unsupported("vector(768)")?
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  category   Category?           @relation(fields: [categoryId], references: [id])
+  stock      ProductStock?
+  orderItems PurchaseOrderItem[]
+
+  @@map("products")
+}
+
+model ProductStock {
+  productId Int      @id @map("product_id")
+  quantity  Int      @default(0)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_stocks")
+}
+
+model PurchaseOrder {
+  id        BigInt   @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  items PurchaseOrderItem[]
+
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderItem {
+  id              BigInt  @id @default(autoincrement())
+  purchaseOrderId BigInt  @map("purchase_order_id")
+  lineIndex       Int     @map("line_index")
+  productId       Int     @map("product_id")
+  quantity        Decimal @db.Decimal(12, 3)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id])
+
+  @@unique([purchaseOrderId, lineIndex])
+  @@map("purchase_order_items")
+}

@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "project": "OCRv2",
+    "version": "1.0",
+    "created_by": "agent",
+    "created_at": "2025-12-03T00:00:00Z"
+  },
+  "todos": [
+    {
+      "id": 1,
+      "title": "初期スキーマ定義",
+      "description": "進捗管理のJSONスキーマを定義する",
+      "status": "completed",
+      "created_at": "2025-12-03T00:00:00Z",
+      "updated_at": "2025-12-03T00:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "setup"
+      ],
+      "logs": [
+        {
+          "timestamp": "2025-12-03T00:00:00Z",
+          "author": "agent",
+          "message": "スキーマ案を作成・初期タスク完了"
+        }
+      ],
+      "artifacts": [
+        "order/初期化.md"
+      ],
+      "related": []
+    },
+    {
+      "id": 2,
+      "title": "要件定義とDB設計分析",
+      "description": "プロジェクト要件を確認し、必要なDBスキーマの変更点を洗い出し、要件定義書を作成する。",
+      "status": "completed",
+      "created_at": "2026-01-05T09:00:00Z",
+      "updated_at": "2026-01-05T09:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "planning",
+        "database"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-05T09:00:00Z",
+          "author": "agent",
+          "message": "プロジェクト要件と既存DBを確認し、要件定義書を作成しました。productsテーブルへのカテゴリ・ベクトルカラム追加、categoriesテーブルの新設が必要です。"
+        }
+      ],
+      "artifacts": [
+        "order/description/2-要件定義.md"
+      ],
+      "related": []
+    },
+    {
+      "id": 3,
+      "title": "カート・発注機能の実装",
+      "description": "Zustandを用いたカート状態管理、カートUI、発注API、発注完了フローの実装",
+      "status": "completed",
+      "created_at": "2026-01-05T10:00:00Z",
+      "updated_at": "2026-01-05T10:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "frontend",
+        "backend",
+        "feature"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-05T10:00:00Z",
+          "author": "agent",
+          "message": "Zustandストア作成、カートページ、発注API(/api/orders)、商品一覧へのカート追加ボタン実装完了。"
+        }
+      ],
+      "artifacts": [
+        "src/lib/store.ts",
+        "src/app/cart/page.tsx",
+        "src/app/api/orders/route.ts",
+        "src/components/AddToCartButton.tsx",
+        "src/components/CartIcon.tsx"
+      ],
+      "related": []
+    },
+    {
+      "id": 4,
+      "title": "OCR機能の実装",
+      "description": "Gemini APIを用いたOCR処理、Embedding生成、pgvectorによる類似検索、およびOCR結果表示用モーダルUIの実装",
+      "status": "completed",
+      "created_at": "2026-01-05T11:00:00Z",
+      "updated_at": "2026-01-05T11:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "frontend",
+        "backend",
+        "ai"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-05T11:00:00Z",
+          "author": "agent",
+          "message": "Gemini 1.5 Flashを用いた画像解析処理、pgvectorによる類似商品検索API、結果選択・カート追加が可能なモーダルUIを実装しました。"
+        }
+      ],
+      "artifacts": [
+        "src/lib/gemini.ts",
+        "src/app/api/ocr/route.ts",
+        "src/components/OCRModal.tsx"
+      ],
+      "related": []
+    }
+  ]
+}

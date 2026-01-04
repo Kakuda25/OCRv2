@@ -1,0 +1,75 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { extractOrderFromImage, getEmbedding } from '@/lib/gemini';
+import { prisma } from '@/lib/prisma';
+
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    const file = formData.get('image') as File;
+
+    if (!file) {
+      return NextResponse.json({ error: 'No image provided' }, { status: 400 });
+    }
+
+    // File to Base64
+    const buffer = await file.arrayBuffer();
+    const base64Image = Buffer.from(buffer).toString('base64');
+    const mimeType = file.type;
+
+    // 1. OCR execution
+    console.log('Starting OCR...');
+    const extractedItems = await extractOrderFromImage(base64Image, mimeType);
+    console.log(`OCR found ${extractedItems.length} items.`);
+
+    // 2. Search for similar products for each item
+    const results = await Promise.all(extractedItems.map(async (item) => {
+      let candidates: any[] = [];
+      
+      if (item.name) {
+        // Generate embedding for the extracted product name
+        const embedding = await getEmbedding(item.name);
+        
+        if (embedding) {
+          const vectorStr = `[${embedding.join(',')}]`;
+          
+          // Vector search using Cosine Distance (<=>)
+          // PostgreSQL pgvector operator: <=>
+          // Returns distance (0 is identical, 2 is opposite). Lower is better.
+          try {
+            const rawCandidates: any[] = await prisma.$queryRaw`
+              SELECT id, product_code, name, price, description, image_url,
+                     1 - (embedding <=> ${vectorStr}::vector) as similarity
+              FROM products
+              ORDER BY embedding <=> ${vectorStr}::vector
+              LIMIT 5
+            `;
+            
+            candidates = rawCandidates.map(c => ({
+              id: c.id,
+              productCode: c.product_code,
+              name: c.name,
+              price: Number(c.price),
+              description: c.description,
+              imageUrl: c.image_url,
+              similarity: Number(c.similarity)
+            }));
+          } catch (e) {
+            console.error("Vector search error:", e);
+          }
+        }
+      }
+
+      return {
+        original: item,
+        candidates: candidates
+      };
+    }));
+
+    return NextResponse.json({ results });
+
+  } catch (error) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+

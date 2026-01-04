@@ -1,0 +1,195 @@
+-- ============================================
+-- 初期データ（シードデータ）
+-- ============================================
+-- 歯科医院向けのサンプルデータ
+-- product_codeは'1', '2'...の自然数（VARCHAR型）
+
+-- ============================================
+-- カテゴリ (Categories)
+-- ============================================
+INSERT INTO categories (name) VALUES
+('機器'),
+('材料'),
+('医薬品'),
+('消耗品'),
+('診療用具'),
+('X線関連'),
+('矯正関連'),
+('予防歯科'),
+('インプラント'),
+('技工関連')
+ON CONFLICT (name) DO NOTHING;
+
+-- ============================================
+-- 機器（EQUIP）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '機器'), '1', 'ハンドピース 標準型', '高回転・低振動の標準ハンドピース。日常的な切削に最適。', 125000.00, 'active', 'https://example.com/images/handpiece.jpg', 0.15, '18x3x3'),
+((SELECT id FROM categories WHERE name = '機器'), '2', 'エアータービン 高速型', '最高回転数40万回転の高速エアータービン。精密な切削が可能。', 185000.00, 'active', 'https://example.com/images/turbine.jpg', 0.08, '15x2.5x2.5'),
+((SELECT id FROM categories WHERE name = '機器'), '3', '超音波スケーラー', '歯石除去に最適な超音波スケーラー。パワー調整可能。', 280000.00, 'active', 'https://example.com/images/scaler.jpg', 1.2, '30x15x10'),
+((SELECT id FROM categories WHERE name = '機器'), '4', '光重合器 LED型', 'LED式の光重合器。コンポジットレジンの重合に使用。', 45000.00, 'active', 'https://example.com/images/curing.jpg', 0.3, '20x8x5'),
+((SELECT id FROM categories WHERE name = '機器'), '5', 'ハンドピース ミニヘッド', '小児や開口量の少ない患者様に最適なミニヘッドハンドピース。', 115000.00, 'active', 'https://example.com/images/handpiece-mini.jpg', 0.12, '16x2.5x2.5'),
+((SELECT id FROM categories WHERE name = '機器'), '6', 'ハンドピース トルク重視型', '切削トルクを重視したハンドピース。金属の除去に最適。', 135000.00, 'active', 'https://example.com/images/handpiece-torque.jpg', 0.18, '19x3.5x3.5'),
+((SELECT id FROM categories WHERE name = '機器'), '7', 'エアータービン 静音型', '回転音を抑えた静音設計のエアータービン。患者様の不快感を軽減。', 195000.00, 'active', 'https://example.com/images/turbine-silent.jpg', 0.09, '15x2.5x2.5'),
+((SELECT id FROM categories WHERE name = '機器'), '8', '超音波スケーラー チップセット', '基本チップ3種類がセットになったスケーラー。', 300000.00, 'active', 'https://example.com/images/scaler-set.jpg', 1.5, '35x20x15'),
+((SELECT id FROM categories WHERE name = '機器'), '9', 'オートクレーブ（高圧蒸気滅菌器）', 'クラスB準拠の高性能オートクレーブ。確実な滅菌が可能。', 850000.00, 'active', 'https://example.com/images/autoclave.jpg', 50.0, '60x50x45'),
+((SELECT id FROM categories WHERE name = '機器'), '10', '口腔外バキューム', '治療中に飛散する粉塵やエアロゾルを吸引。クリーンな診療環境を実現。', 450000.00, 'active', 'https://example.com/images/extraoral-vacuum.jpg', 30.0, '40x40x120'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 材料（MAT）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '材料'), '11', 'コンポジットレジン A2', '審美性の高いコンポジットレジン。A2色。', 8500.00, 'active', 'https://example.com/images/composite.jpg', 0.01, '5x2x1'),
+((SELECT id FROM categories WHERE name = '材料'), '12', 'コンポジットレジン A3', '審美性の高いコンポジットレジン。A3色。', 8500.00, 'active', 'https://example.com/images/composite-a3.jpg', 0.01, '5x2x1'),
+((SELECT id FROM categories WHERE name = '材料'), '13', 'アルジネート印象材 標準', 'アルジネート系の印象材。標準硬化時間。', 3200.00, 'active', 'https://example.com/images/alginate.jpg', 0.5, '20x15x10'),
+((SELECT id FROM categories WHERE name = '材料'), '14', 'シリコーン印象材 高精度', '高精度なシリコーン印象材。精密な印象が可能。', 12500.00, 'active', 'https://example.com/images/silicone.jpg', 0.3, '15x10x8'),
+((SELECT id FROM categories WHERE name = '材料'), '15', 'グラスアイオノマーセメント', 'フッ素含有のグラスアイオノマーセメント。', 4200.00, 'active', 'https://example.com/images/cement.jpg', 0.05, '8x5x3'),
+((SELECT id FROM categories WHERE name = '材料'), '16', 'アマルガム 標準', '充填用アマルガム。標準サイズ。', 2800.00, 'active', 'https://example.com/images/amalgam.jpg', 0.1, '10x8x5'),
+((SELECT id FROM categories WHERE name = '材料'), '17', 'コンポジットレジン A1', '審美性の高いコンポジットレジン。明るいA1色。', 8500.00, 'active', 'https://example.com/images/composite-a1.jpg', 0.01, '5x2x1'),
+((SELECT id FROM categories WHERE name = '材料'), '18', 'コンポジットレジン A3.5', '審美性の高いコンポジットレジン。濃いめのA3.5色。', 8500.00, 'active', 'https://example.com/images/composite-a35.jpg', 0.01, '5x2x1'),
+((SELECT id FROM categories WHERE name = '材料'), '19', 'コンポジットレジン B2', '審美性の高いコンポジットレジン。黄色みの強いB2色。', 8500.00, 'active', 'https://example.com/images/composite-b2.jpg', 0.01, '5x2x1'),
+((SELECT id FROM categories WHERE name = '材料'), '20', 'フローアブルレジン A2', '流動性の高いコンポジットレジン。A2色。', 7800.00, 'active', 'https://example.com/images/flow-resin-a2.jpg', 0.01, '6x2x2'),
+((SELECT id FROM categories WHERE name = '材料'), '21', 'アルジネート印象材 速硬化', '硬化時間の短いアルジネート印象材。嘔吐反射のある患者様に。', 3400.00, 'active', 'https://example.com/images/alginate-fast.jpg', 0.5, '20x15x10'),
+((SELECT id FROM categories WHERE name = '材料'), '22', 'アルジネート印象材 ダストフリー', '粉立ちの少ないアルジネート印象材。', 3500.00, 'active', 'https://example.com/images/alginate-dustfree.jpg', 0.5, '20x15x10'),
+((SELECT id FROM categories WHERE name = '材料'), '23', 'シリコーン印象材 パテタイプ', '初期印象用の硬めのシリコーン印象材。', 11000.00, 'active', 'https://example.com/images/silicone-putty.jpg', 0.6, '15x15x10'),
+((SELECT id FROM categories WHERE name = '材料'), '24', 'レジンセメント', '接着力の高いレジン系セメント。', 8000.00, 'active', 'https://example.com/images/resin-cement.jpg', 0.05, '8x5x3'),
+((SELECT id FROM categories WHERE name = '材料'), '25', 'エッチングジェル', '歯面処理用リン酸エッチング材。', 2500.00, 'active', 'https://example.com/images/etching.jpg', 0.02, '10x2x2'),
+((SELECT id FROM categories WHERE name = '材料'), '26', 'ボンディング材', 'コンポジットレジン用接着材。1ステップタイプ。', 12000.00, 'active', 'https://example.com/images/bonding.jpg', 0.01, '5x2x2'),
+((SELECT id FROM categories WHERE name = '材料'), '27', 'テンポラリークラウン用レジン', '仮歯作製用即時重合レジン。', 6500.00, 'active', 'https://example.com/images/temp-resin.jpg', 0.2, '10x8x5'),
+((SELECT id FROM categories WHERE name = '材料'), '28', '合着セメント', 'クラウン・インレーセット用合着セメント。', 5500.00, 'active', 'https://example.com/images/luting-cement.jpg', 0.1, '10x5x5'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 医薬品（MED）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '医薬品'), '29', '消毒用エタノール 80% 500ml', '手指・器具の消毒に使用するエタノール。', 1200.00, 'active', 'https://example.com/images/ethanol.jpg', 0.5, '10x8x15'),
+((SELECT id FROM categories WHERE name = '医薬品'), '30', 'リドカイン注射液 2% 1.8ml', '局所麻酔用リドカイン注射液。', 350.00, 'active', 'https://example.com/images/lidocaine.jpg', 0.002, '1x1x5'),
+((SELECT id FROM categories WHERE name = '医薬品'), '31', 'グルコン酸クロルヘキシジン 0.2%', 'うがい薬・消毒薬として使用。', 2800.00, 'active', 'https://example.com/images/chx.jpg', 0.5, '12x8x18'),
+((SELECT id FROM categories WHERE name = '医薬品'), '32', '過酸化水素水 3% 500ml', '洗浄・消毒に使用する過酸化水素水。', 850.00, 'active', 'https://example.com/images/h2o2.jpg', 0.5, '10x8x15'),
+((SELECT id FROM categories WHERE name = '医薬品'), '33', '消毒用エタノール 80% 1L', '大容量の手指・器具消毒用エタノール。', 2000.00, 'active', 'https://example.com/images/ethanol-1l.jpg', 1.0, '12x10x20'),
+((SELECT id FROM categories WHERE name = '医薬品'), '34', 'イソプロピルアルコール 500ml', '脱脂・清掃用アルコール。', 900.00, 'active', 'https://example.com/images/ipa.jpg', 0.5, '10x8x15'),
+((SELECT id FROM categories WHERE name = '医薬品'), '35', '表面麻酔スプレー', '注射前の刺入点疼痛緩和用スプレー。', 1500.00, 'active', 'https://example.com/images/surface-anesthesia.jpg', 0.1, '5x5x12'),
+((SELECT id FROM categories WHERE name = '医薬品'), '36', '表面麻酔ジェル ストロベリー', '小児に人気のストロベリー味の表面麻酔ジェル。', 1600.00, 'active', 'https://example.com/images/anesthesia-gel.jpg', 0.05, '4x4x3'),
+((SELECT id FROM categories WHERE name = '医薬品'), '37', '止血剤 硫酸第二鉄', '歯肉圧排・止血用薬剤。', 3200.00, 'active', 'https://example.com/images/hemostatic.jpg', 0.05, '5x5x8'),
+((SELECT id FROM categories WHERE name = '医薬品'), '38', 'フッ素塗布用ジェル りんご味', 'むし歯予防用フッ素ジェル。りんご味。', 2200.00, 'active', 'https://example.com/images/fluoride-gel.jpg', 0.2, '8x5x15'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 消耗品（SUP）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '消耗品'), '39', '使い捨てグローブ ニトリル Mサイズ', 'ニトリル製の使い捨てグローブ。Mサイズ。100枚入り。', 2800.00, 'active', 'https://example.com/images/gloves-m.jpg', 0.2, '25x20x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '40', '使い捨てグローブ ニトリル Lサイズ', 'ニトリル製の使い捨てグローブ。Lサイズ。100枚入り。', 2800.00, 'active', 'https://example.com/images/gloves-l.jpg', 0.2, '25x20x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '41', 'サージカルマスク 不織布 50枚入り', '医療用サージカルマスク。50枚入り。', 1800.00, 'active', 'https://example.com/images/mask.jpg', 0.1, '20x15x3'),
+((SELECT id FROM categories WHERE name = '消耗品'), '42', '滅菌ガーゼ 5x5cm 100枚入り', '滅菌済みガーゼ。5x5cm。100枚入り。', 1200.00, 'active', 'https://example.com/images/gauze.jpg', 0.05, '15x10x2'),
+((SELECT id FROM categories WHERE name = '消耗品'), '43', '使い捨てエプロン 不織布 50枚入り', '患者用使い捨てエプロン。50枚入り。', 2500.00, 'active', 'https://example.com/images/apron.jpg', 0.3, '30x25x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '44', 'コップ 紙製 100枚入り', 'うがい用紙コップ。100枚入り。', 800.00, 'active', 'https://example.com/images/cup.jpg', 0.1, '20x20x10'),
+((SELECT id FROM categories WHERE name = '消耗品'), '45', '使い捨てグローブ ニトリル Sサイズ', 'ニトリル製の使い捨てグローブ。Sサイズ。100枚入り。', 2800.00, 'active', 'https://example.com/images/gloves-s.jpg', 0.2, '25x20x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '46', '使い捨てグローブ ラテックス Mサイズ', 'フィット感の良いラテックス製グローブ。Mサイズ。100枚入り。', 2500.00, 'active', 'https://example.com/images/gloves-latex-m.jpg', 0.2, '25x20x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '47', 'サージカルマスク 小さめ 50枚入り', '女性や小顔の方向けのサージカルマスク。50枚入り。', 1800.00, 'active', 'https://example.com/images/mask-small.jpg', 0.1, '20x15x3'),
+((SELECT id FROM categories WHERE name = '消耗品'), '48', '滅菌ガーゼ 7.5x7.5cm 100枚入り', '少し大きめの滅菌済みガーゼ。100枚入り。', 1500.00, 'active', 'https://example.com/images/gauze-large.jpg', 0.08, '18x12x3'),
+((SELECT id FROM categories WHERE name = '消耗品'), '49', 'デンタルコットンロール #2 1000本', '防湿用コットンロール。標準サイズ。', 1200.00, 'active', 'https://example.com/images/cotton-roll.jpg', 0.3, '20x15x10'),
+((SELECT id FROM categories WHERE name = '消耗品'), '50', 'ヘッドレストカバー 紙製 100枚', '使い捨てのヘッドレストカバー。', 1500.00, 'active', 'https://example.com/images/headrest-cover.jpg', 0.2, '15x10x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '51', 'バキュームチップ（排唾管）', '曲げられる使い捨て排唾管。100本入り。', 900.00, 'active', 'https://example.com/images/saliva-ejector.jpg', 0.5, '15x15x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '52', 'マイクロブラシ ファイン 100本', '細かい塗布に適したマイクロブラシ。', 1100.00, 'active', 'https://example.com/images/microbrush.jpg', 0.05, '10x5x5'),
+((SELECT id FROM categories WHERE name = '消耗品'), '53', 'フェースシールド 交換用フィルム', 'フェースシールドの交換用フィルム。10枚入り。', 1500.00, 'active', 'https://example.com/images/faceshield-film.jpg', 0.1, '20x20x1'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 診療用具（CLIN）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '診療用具'), '54', '診療チェア 電動式', '電動昇降式の診療チェア。快適な診療環境を提供。', 850000.00, 'active', 'https://example.com/images/chair.jpg', 150.0, '200x80x120'),
+((SELECT id FROM categories WHERE name = '診療用具'), '55', '器具トレー ステンレス', '滅菌可能なステンレス製器具トレー。', 3500.00, 'active', 'https://example.com/images/tray.jpg', 0.5, '30x20x3'),
+((SELECT id FROM categories WHERE name = '診療用具'), '56', '吸引チップ 使い捨て 100本入り', '吸引用の使い捨てチップ。100本入り。', 1800.00, 'active', 'https://example.com/images/suction.jpg', 0.1, '25x15x5'),
+((SELECT id FROM categories WHERE name = '診療用具'), '57', 'ドクターチェア', '術者用スツール。昇降機能付き。', 45000.00, 'active', 'https://example.com/images/doctor-stool.jpg', 10.0, '50x50x60'),
+((SELECT id FROM categories WHERE name = '診療用具'), '58', 'アシスタントチェア', 'アシスタント用スツール。アームレスト付き。', 55000.00, 'active', 'https://example.com/images/assistant-stool.jpg', 12.0, '50x50x70'),
+((SELECT id FROM categories WHERE name = '診療用具'), '59', 'カラープローブ', 'ポケット深さ測定用プローブ。色分けで見やすい。', 2500.00, 'active', 'https://example.com/images/probe.jpg', 0.02, '15x0.5x0.5'),
+((SELECT id FROM categories WHERE name = '診療用具'), '60', 'エキスプローラー（探針）', 'カリエス探知用の鋭利な探針。', 1800.00, 'active', 'https://example.com/images/explorer.jpg', 0.02, '15x0.5x0.5'),
+((SELECT id FROM categories WHERE name = '診療用具'), '61', 'デンタルミラー', '口腔内確認用ミラー。ハンドル付き。', 1200.00, 'active', 'https://example.com/images/mirror.jpg', 0.03, '16x2x2'),
+((SELECT id FROM categories WHERE name = '診療用具'), '62', 'ピンセット（カレッジプライヤー）', '歯科用ピンセット。ステンレス製。', 1500.00, 'active', 'https://example.com/images/tweezers.jpg', 0.05, '15x1x1'),
+((SELECT id FROM categories WHERE name = '診療用具'), '63', 'スプーンエキスカベーター', '軟化象牙質除去用器具。', 2200.00, 'active', 'https://example.com/images/excavator.jpg', 0.03, '15x0.5x0.5'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- X線関連（XRAY）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = 'X線関連'), '64', 'X線フィルム パノラマ 24x30mm', 'パノラマX線用フィルム。24x30mm。100枚入り。', 15000.00, 'active', 'https://example.com/images/film-pano.jpg', 0.5, '30x25x5'),
+((SELECT id FROM categories WHERE name = 'X線関連'), '65', 'X線フィルム デンタル 31x41mm', 'デンタルX線用フィルム。31x41mm。100枚入り。', 12000.00, 'active', 'https://example.com/images/film-dental.jpg', 0.4, '25x20x5'),
+((SELECT id FROM categories WHERE name = 'X線関連'), '66', 'X線現像液 セット', 'X線フィルム現像用の現像液セット。', 8500.00, 'active', 'https://example.com/images/developer.jpg', 2.0, '20x15x25'),
+((SELECT id FROM categories WHERE name = 'X線関連'), '67', 'X線防護エプロン 鉛入り', 'X線撮影時の防護用エプロン。鉛入り。', 45000.00, 'active', 'https://example.com/images/lead-apron.jpg', 5.0, '80x60x2'),
+((SELECT id FROM categories WHERE name = 'X線関連'), '68', 'IPプレート サイズ2', 'デジタルX線用イメージングプレート。標準サイズ。', 8000.00, 'active', 'https://example.com/images/ip-plate-2.jpg', 0.01, '4x3x0.1'),
+((SELECT id FROM categories WHERE name = 'X線関連'), '69', 'IPプレート保護袋', 'IPプレート用の使い捨て保護袋。', 2000.00, 'active', 'https://example.com/images/ip-cover.jpg', 0.1, '10x5x5'),
+((SELECT id FROM categories WHERE name = 'X線関連'), '70', 'X線定着液', 'X線フィルム用の定着液単体。', 4000.00, 'active', 'https://example.com/images/fixer.jpg', 1.0, '10x10x20'),
+((SELECT id FROM categories WHERE name = 'X線関連'), '71', 'センサーホルダー セット', 'デジタルセンサー用ホルダーキット。', 12000.00, 'active', 'https://example.com/images/sensor-holder.jpg', 0.2, '15x10x5'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 歯列矯正関連（ORTHO）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '矯正関連'), '72', 'メタルブラケット 標準型', 'ステンレス製の標準メタルブラケット。確実な矯正力が得られます。', 850.00, 'active', 'https://example.com/images/metal-bracket.jpg', 0.001, '3x3x2'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '73', 'セラミックブラケット 審美型', '審美性の高いセラミックブラケット。目立ちにくい透明感のある素材。', 1200.00, 'active', 'https://example.com/images/ceramic-bracket.jpg', 0.001, '3x3x2'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '74', 'アーチワイヤー ニッケルチタン 0.014インチ', '形状記憶合金製のアーチワイヤー。初期段階の矯正に使用。', 3500.00, 'active', 'https://example.com/images/niti-wire-014.jpg', 0.01, '30x0.5x0.5'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '75', 'アーチワイヤー ステンレス 0.018インチ', 'ステンレス製のアーチワイヤー。中後期の矯正に使用。', 2800.00, 'active', 'https://example.com/images/ss-wire-018.jpg', 0.01, '30x0.5x0.5'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '76', 'リテーナー ハーレー型', '矯正後の保定用リテーナー。ハーレー型。', 15000.00, 'active', 'https://example.com/images/hawley-retainer.jpg', 0.05, '10x8x3'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '77', 'リテーナー クリアリテーナー', '透明なマウスピース型リテーナー。審美性が高い。', 25000.00, 'active', 'https://example.com/images/clear-retainer.jpg', 0.03, '8x6x2'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '78', 'エラスティック 中サイズ', '矯正用エラスティック。中サイズ。100本入り。', 1200.00, 'active', 'https://example.com/images/elastic-medium.jpg', 0.01, '10x5x1'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '79', 'エラスティック 大サイズ', '矯正用エラスティック。大サイズ。100本入り。', 1200.00, 'active', 'https://example.com/images/elastic-large.jpg', 0.01, '12x6x1'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '80', 'バンド 上顎用 標準サイズ', '上顎用の矯正バンド。標準サイズ。', 1800.00, 'active', 'https://example.com/images/band-upper.jpg', 0.005, '5x3x1'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '81', 'バンド 下顎用 標準サイズ', '下顎用の矯正バンド。標準サイズ。', 1800.00, 'active', 'https://example.com/images/band-lower.jpg', 0.005, '5x3x1'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '82', '矯正用セメント 光重合型', 'ブラケット固定用の光重合型セメント。', 4500.00, 'active', 'https://example.com/images/ortho-cement.jpg', 0.05, '8x5x3'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '83', 'インビザライン アライナー 上顎', '透明マウスピース型矯正装置。上顎用。', 150000.00, 'active', 'https://example.com/images/invisalign-upper.jpg', 0.02, '8x6x2'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '84', 'インビザライン アライナー 下顎', '透明マウスピース型矯正装置。下顎用。', 150000.00, 'active', 'https://example.com/images/invisalign-lower.jpg', 0.02, '8x6x2'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '85', 'リンガルアーチ 標準型', '舌側からの矯正用リンガルアーチ。標準型。', 12000.00, 'active', 'https://example.com/images/lingual-arch.jpg', 0.05, '15x2x1'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '86', 'ヘッドギア 頸部固定型', '上顎前突の矯正用ヘッドギア。頸部固定型。', 35000.00, 'active', 'https://example.com/images/headgear.jpg', 0.3, '30x20x10'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '87', 'セルフライゲーティングブラケット', '結紮不要のブラケット。摩擦抵抗が少ない。', 1500.00, 'active', 'https://example.com/images/self-ligating.jpg', 0.001, '3x3x2'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '88', 'アーチワイヤー ニッケルチタン 0.016インチ', '形状記憶合金ワイヤー。0.016インチ。', 3500.00, 'active', 'https://example.com/images/niti-wire-016.jpg', 0.01, '30x0.5x0.5'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '89', 'チューブリガチャー', 'エラスティックの代替となる結紮材。', 1000.00, 'active', 'https://example.com/images/tube-ligature.jpg', 0.01, '10x5x1'),
+((SELECT id FROM categories WHERE name = '矯正関連'), '90', 'パワーチェーン', '歯の移動や空隙閉鎖に使用するチェーン状エラスティック。', 1800.00, 'active', 'https://example.com/images/power-chain.jpg', 0.02, '10x5x2'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 予防歯科（新規）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '予防歯科'), '91', 'プロフィラキシスペースト 粗研磨', '歯面清掃用ペースト。ステイン除去用。ミント味。', 2500.00, 'active', 'https://example.com/images/prophy-paste-coarse.jpg', 0.2, '8x8x6'),
+((SELECT id FROM categories WHERE name = '予防歯科'), '92', 'プロフィラキシスペースト 仕上げ研磨', '歯面清掃用ペースト。仕上げ用。フルーツ味。', 2500.00, 'active', 'https://example.com/images/prophy-paste-fine.jpg', 0.2, '8x8x6'),
+((SELECT id FROM categories WHERE name = '予防歯科'), '93', 'フロス ワックス付き 50m', 'デンタルフロス。ワックス加工で滑りやすい。', 350.00, 'active', 'https://example.com/images/floss.jpg', 0.02, '5x5x2'),
+((SELECT id FROM categories WHERE name = '予防歯科'), '94', '歯間ブラシ L字型 SSサイズ', '奥歯にも届きやすいL字型歯間ブラシ。SSサイズ。', 500.00, 'active', 'https://example.com/images/interdental-brush.jpg', 0.05, '10x8x2'),
+((SELECT id FROM categories WHERE name = '予防歯科'), '95', '染め出し液', '歯垢染色液。古い歯垢と新しい歯垢を色分け。', 1200.00, 'active', 'https://example.com/images/disclosing-solution.jpg', 0.1, '5x5x10'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- インプラント（新規）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = 'インプラント'), '96', 'インプラントフィクスチャー φ4.0mm', 'チタン製インプラント体。直径4.0mm。', 35000.00, 'active', 'https://example.com/images/implant-fixture.jpg', 0.005, '2x1x1'),
+((SELECT id FROM categories WHERE name = 'インプラント'), '97', 'ヒーリングアバットメント', '歯肉治癒用アバットメント。', 5000.00, 'active', 'https://example.com/images/healing-abutment.jpg', 0.002, '1x1x1'),
+((SELECT id FROM categories WHERE name = 'インプラント'), '98', 'インプラントドライバー', 'インプラント埋入用ドライバー。', 8500.00, 'active', 'https://example.com/images/implant-driver.jpg', 0.05, '10x1x1'),
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 技工関連（新規）
+-- ============================================
+INSERT INTO products (category_id, product_code, name, description, price, status, image_url, weight_kg, dimensions) VALUES
+((SELECT id FROM categories WHERE name = '技工関連'), '99', '石膏 硬質', '模型製作用硬質石膏。イエロー。3kg。', 2800.00, 'active', 'https://example.com/images/stone.jpg', 3.0, '20x15x30'),
+((SELECT id FROM categories WHERE name = '技工関連'), '100', 'ワックス スパチュラ', 'ワックスアップ用スパチュラ。', 1500.00, 'active', 'https://example.com/images/wax-spatula.jpg', 0.05, '15x1x1')
+ON CONFLICT (product_code) DO NOTHING;
+
+-- ============================================
+-- 在庫データの初期化
+-- ============================================
+-- 簡略化のため、全商品一律で在庫を登録（実際の運用では個別に設定）
+INSERT INTO product_stocks (product_id, quantity)
+SELECT id, 
+    CASE 
+        WHEN id % 5 = 0 THEN 0  -- 5件に1件は在庫切れ
+        WHEN id % 3 = 0 THEN 10 -- 少なめ
+        ELSE 100                -- 通常在庫
+    END
+FROM products
+ON CONFLICT (product_id) DO NOTHING;
