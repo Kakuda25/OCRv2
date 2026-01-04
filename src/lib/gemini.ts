@@ -19,7 +19,7 @@ export async function getEmbedding(text: string): Promise<number[] | null> {
 export interface ExtractedItem {
   name: string;
   code?: string;
-  quantity: number;
+  // quantity: number; // Removed as requested
 }
 
 export async function extractOrderFromImage(base64Image: string, mimeType: string): Promise<ExtractedItem[]> {
@@ -27,22 +27,21 @@ export async function extractOrderFromImage(base64Image: string, mimeType: strin
     const model = genAI.getGenerativeModel({ model: VISION_MODEL });
     
     const prompt = `
-      You are an OCR assistant for a dental supply ordering system.
-      Analyze this image of a purchase order or product list.
-      Extract the product names, product codes (if visible), and quantities.
+      あなたは歯科用品発注システムのOCRアシスタントです。
+      この発注書または商品リストの画像を分析してください。
+      画像から文字を構造化して抽出しその中から商品名に該当するものを抽出してください。
+      数量や価格は無視してください。商品名の文字列を正確に読み取ることに集中してください。
       
-      Return a JSON array of objects. Each object should have:
-      - "name": The product name (string)
-      - "code": The product code if available (string, otherwise null)
-      - "quantity": The quantity (number, default to 1 if not specified)
+      以下の形式のJSONオブジェクトの配列を返してください：
+      - "name": 商品名（文字列）。正確に。
       
-      Example output:
+      出力例:
       [
-        {"name": "Bonding Agent", "code": "BA-001", "quantity": 2},
-        {"name": "Dental Mirror", "code": null, "quantity": 5}
+        {"name": "ボンディング材"},
+        {"name": "デンタルミラー"}
       ]
       
-      Output ONLY the JSON array. Do not include markdown formatting like \`\`\`json.
+      JSON配列のみを出力してください。markdown jsonのようなマークダウンフォーマットは含めないでください。
     `;
 
     const result = await model.generateContent([

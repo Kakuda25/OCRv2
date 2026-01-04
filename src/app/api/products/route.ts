@@ -22,18 +22,34 @@ export async function GET(req: NextRequest) {
       where.categoryId = parseInt(categoryId);
     }
 
-    const products = await prisma.product.findMany({
-      where,
-      include: {
-        category: true,
-      },
-      orderBy: {
-        id: 'asc',
-      },
-      take: 50, // Limit for MVP
-    });
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const skip = (page - 1) * limit;
 
-    return NextResponse.json(products);
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        include: {
+          category: true,
+        },
+        orderBy: {
+          id: 'asc',
+        },
+        take: limit,
+        skip: skip,
+      }),
+      prisma.product.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      products,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      }
+    });
   } catch (error) {
     console.error('API Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

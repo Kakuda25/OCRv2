@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
