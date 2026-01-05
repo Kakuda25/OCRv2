@@ -166,6 +166,142 @@
         "order/description/4-OCR完全一致ロジック修正.md"
       ],
       "related": []
+    },
+    {
+      "id": 7,
+      "title": "Embeddingモデルの変更 (Gemini 3 Flash Preview)",
+      "description": "Embeddingモデルをtext-embedding-004からgemini-3-flash-previewに変更し、再ベクター化を試みる。",
+      "status": "blocked",
+      "created_at": "2026-01-06T13:00:00Z",
+      "updated_at": "2026-01-06T13:10:00Z",
+      "owner": "agent",
+      "priority": "medium",
+      "tags": [
+        "backend",
+        "embedding"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-06T13:05:00Z",
+          "author": "agent",
+          "message": "gemini-3-flash-previewおよびgemini-2.0-flash-expを指定して再ベクター化を試みましたが、APIが404エラー（モデルが見つからない、またはembedContent非対応）を返しました。text-embedding-004に戻しました。"
+        }
+      ],
+      "artifacts": [
+        "backend/scripts/seed_embeddings.py",
+        "src/lib/gemini.ts"
+      ],
+      "related": []
+    },
+    {
+      "id": 8,
+      "title": "発注済み一覧ページの実装",
+      "description": "過去の発注履歴と明細を表示するページのUIおよびAPI実装",
+      "status": "completed",
+      "created_at": "2026-01-06T14:00:00Z",
+      "updated_at": "2026-01-06T14:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "frontend",
+        "backend",
+        "feature"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-06T14:00:00Z",
+          "author": "agent",
+          "message": "発注履歴取得API(GET /api/orders)の実装、および発注済み一覧ページ(src/app/orders/page.tsx)のUI実装を完了しました。BigIntのJSONシリアライズ対応も行いました。"
+        }
+      ],
+      "artifacts": [
+        "src/app/api/orders/route.ts",
+        "src/app/orders/page.tsx"
+      ],
+      "related": []
+    },
+    {
+      "id": 9,
+      "title": "商品登録ページの実装",
+      "description": "商品登録ページのUI、POST API実装、および商品登録時のEmbedding生成処理の実装",
+      "status": "completed",
+      "created_at": "2026-01-06T15:00:00Z",
+      "updated_at": "2026-01-06T15:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "frontend",
+        "backend",
+        "feature"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-06T15:00:00Z",
+          "author": "agent",
+          "message": "商品登録API(POST /api/products)の実装、PrismaトランザクションによるEmbedding生成・保存、および商品登録フォームUIの実装を完了しました。"
+        }
+      ],
+      "artifacts": [
+        "src/app/api/products/route.ts",
+        "src/app/products/new/page.tsx",
+        "src/components/ProductCreateForm.tsx"
+      ],
+      "related": []
+    },
+    {
+      "id": 10,
+      "title": "商品コード自動採番機能の実装",
+      "description": "商品登録時、商品コードを既存の数値のみのコードの最大値+1で自動採番するように変更する。",
+      "status": "completed",
+      "created_at": "2026-01-06T15:30:00Z",
+      "updated_at": "2026-01-06T15:30:00Z",
+      "owner": "agent",
+      "priority": "medium",
+      "tags": [
+        "backend",
+        "frontend",
+        "feature"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-06T15:30:00Z",
+          "author": "agent",
+          "message": "APIでproductCode未指定時に最大値+1を自動設定するロジックを追加し、UIから商品コード入力欄を削除しました。"
+        }
+      ],
+      "artifacts": [
+        "src/app/api/products/route.ts",
+        "src/components/ProductCreateForm.tsx"
+      ],
+      "related": []
+    },
+    {
+      "id": 11,
+      "title": "Embedding生成パラメータの不一致修正",
+      "description": "OCR検索結果に無関係な商品が高スコアで表示される問題を解決するため、Embedding生成時のtaskTypeとフォーマットを統一する。",
+      "status": "completed",
+      "created_at": "2026-01-06T16:00:00Z",
+      "updated_at": "2026-01-06T16:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "backend",
+        "ai",
+        "bugfix"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-06T16:00:00Z",
+          "author": "agent",
+          "message": "商品登録時はRETRIEVAL_DOCUMENT、検索時はRETRIEVAL_QUERYを指定するように修正し、テキストフォーマットもPythonスクリプトと統一しました。"
+        }
+      ],
+      "artifacts": [
+        "src/lib/gemini.ts",
+        "src/app/api/products/route.ts",
+        "src/app/api/ocr/route.ts"
+      ],
+      "related": []
     }
   ]
 }

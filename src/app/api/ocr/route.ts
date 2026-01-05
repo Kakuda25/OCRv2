@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { extractOrderFromImage, getEmbedding } from '@/lib/gemini';
 import { prisma } from '@/lib/prisma';
+import { TaskType } from '@google/generative-ai';
 
 export async function POST(req: NextRequest) {
   try {
@@ -57,7 +58,8 @@ export async function POST(req: NextRequest) {
       
       if (item.name) {
         // Generate embedding for the extracted product name
-        const embedding = await getEmbedding(item.name);
+        // Use RETRIEVAL_QUERY for search queries
+        const embedding = await getEmbedding(item.name, TaskType.RETRIEVAL_QUERY);
         
         if (embedding) {
           const vectorStr = `[${embedding.join(',')}]`;
@@ -109,4 +111,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-

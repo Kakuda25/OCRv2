@@ -1,14 +1,28 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, TaskType } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 const EMBEDDING_MODEL = "text-embedding-004";
 // Gemini 2.0 Flash Experimentalを使用
 const VISION_MODEL = "gemini-3-flash-preview"; 
 
-export async function getEmbedding(text: string): Promise<number[] | null> {
+/**
+ * テキストからEmbeddingベクトルを生成する
+ * @param text 埋め込むテキスト
+ * @param taskType タスクタイプ (検索される側: RETRIEVAL_DOCUMENT, 検索する側: RETRIEVAL_QUERY)
+ */
+export async function getEmbedding(text: string, taskType?: TaskType): Promise<number[] | null> {
   try {
     const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
-    const result = await model.embedContent(text);
+    
+    // taskTypeが指定されている場合はオプションオブジェクトを使用
+    // 指定がない場合でも、将来的な拡張のためにオブジェクト形式に統一しても良いが
+    // ここでは引数に応じて呼び出し方を変える
+    const result = await model.embedContent({
+      content: { role: 'user', parts: [{ text }] },
+      taskType: taskType,
+      title: taskType === TaskType.RETRIEVAL_DOCUMENT ? "Product Description" : undefined
+    });
+
     return result.embedding.values;
   } catch (e) {
     console.error(`Error generating embedding: ${e}`);
@@ -69,4 +83,3 @@ export async function extractOrderFromImage(base64Image: string, mimeType: strin
     return [];
   }
 }
-
