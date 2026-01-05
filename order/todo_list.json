@@ -112,6 +112,60 @@
         "src/components/OCRModal.tsx"
       ],
       "related": []
+    },
+    {
+      "id": 5,
+      "title": "データ投入プロセスの修正",
+      "description": "Docker初期化スクリプトとPrisma Migrateの競合を解消し、正しいセットアップ手順を確立する",
+      "status": "completed",
+      "created_at": "2026-01-06T00:00:00Z",
+      "updated_at": "2026-01-06T00:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "database",
+        "bugfix"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-06T00:00:00Z",
+          "author": "agent",
+          "message": "Docker Composeの初期化スクリプトマウントを削除し、Prisma Seedで全データを投入するように修正しました。README.mdの手順も更新しました。"
+        }
+      ],
+      "artifacts": [
+        "prisma/seed.ts",
+        "docker-compose.yml",
+        "prisma/schema.prisma",
+        "README.md"
+      ],
+      "related": []
+    },
+    {
+      "id": 6,
+      "title": "OCR完全一致ロジック修正",
+      "description": "OCR結果と商品名が完全一致する場合でも類似度が低く出る問題を修正する",
+      "status": "completed",
+      "created_at": "2026-01-06T12:00:00Z",
+      "updated_at": "2026-01-06T12:00:00Z",
+      "owner": "agent",
+      "priority": "high",
+      "tags": [
+        "bugfix",
+        "backend"
+      ],
+      "logs": [
+        {
+          "timestamp": "2026-01-06T12:00:00Z",
+          "author": "agent",
+          "message": "OCR結果名とDB商品名の完全一致検索を追加し、一致時は類似度1.0とする処理を実装しました。"
+        }
+      ],
+      "artifacts": [
+        "src/app/api/ocr/route.ts",
+        "order/description/4-OCR完全一致ロジック修正.md"
+      ],
+      "related": []
     }
   ]
 }

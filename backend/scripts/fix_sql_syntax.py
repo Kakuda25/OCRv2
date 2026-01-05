@@ -40,3 +40,4 @@ def fix_sql_syntax():
 if __name__ == "__main__":
     fix_sql_syntax()
 
+

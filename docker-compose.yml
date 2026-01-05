@@ -13,7 +13,7 @@ services:
     # データの永続化（ボリューム）
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./db:/docker-entrypoint-initdb.d:ro
+      # - ./db:/docker-entrypoint-initdb.d:ro
     
     # ポートマッピング（ホスト:コンテナ）
     ports:

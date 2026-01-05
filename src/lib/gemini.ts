@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 const EMBEDDING_MODEL = "text-embedding-004";
 // Gemini 2.0 Flash Experimentalを使用
-const VISION_MODEL = "gemini-2.0-flash-exp"; 
+const VISION_MODEL = "gemini-3-flash-preview"; 
 
 export async function getEmbedding(text: string): Promise<number[] | null> {
   try {

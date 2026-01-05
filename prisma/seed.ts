@@ -34,7 +34,7 @@ async function main() {
     console.log('Seeding initial data from SQL files...');
     
     // 04-seed-data.sqlにはINSERT文が含まれている
-    const sqlFiles = ['db/04-seed-data.sql'];
+    const sqlFiles = ['db/04-seed-data.sql', 'db/05-purchase-orders.sql'];
     
     for (const file of sqlFiles) {
         const filePath = path.join(process.cwd(), file);

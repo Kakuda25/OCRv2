@@ -24,6 +24,36 @@ export async function POST(req: NextRequest) {
     // 2. Search for similar products for each item
     const results = await Promise.all(extractedItems.map(async (item) => {
       let candidates: any[] = [];
+      const trimmedName = item.name ? item.name.trim() : '';
+      
+      // 2a. Text Match Search (Partial match receives 1.0 similarity)
+      if (trimmedName) {
+        try {
+          const textMatches = await prisma.product.findMany({
+            where: {
+              name: {
+                contains: trimmedName,
+                mode: 'insensitive' // Ignore case
+              }
+            },
+            take: 3
+          });
+
+          if (textMatches.length > 0) {
+            candidates = textMatches.map(c => ({
+              id: c.id,
+              productCode: c.productCode,
+              name: c.name,
+              price: Number(c.price),
+              description: c.description,
+              imageUrl: c.imageUrl,
+              similarity: 1.0 // Text match treated as high confidence
+            }));
+          }
+        } catch (e) {
+          console.error("Text search error:", e);
+        }
+      }
       
       if (item.name) {
         // Generate embedding for the extracted product name
@@ -44,15 +74,22 @@ export async function POST(req: NextRequest) {
               LIMIT 5
             `;
             
-            candidates = rawCandidates.map(c => ({
-              id: c.id,
-              productCode: c.product_code,
-              name: c.name,
-              price: Number(c.price),
-              description: c.description,
-              imageUrl: c.image_url,
-              similarity: Number(c.similarity)
-            }));
+            // Filter out items already found in text search
+            const existingIds = new Set(candidates.map(c => c.id));
+            
+            const vectorCandidates = rawCandidates
+              .filter(c => !existingIds.has(c.id))
+              .map(c => ({
+                id: c.id,
+                productCode: c.product_code,
+                name: c.name,
+                price: Number(c.price),
+                description: c.description,
+                imageUrl: c.image_url,
+                similarity: Number(c.similarity)
+              }));
+              
+            candidates = [...candidates, ...vectorCandidates];
           } catch (e) {
             console.error("Vector search error:", e);
           }

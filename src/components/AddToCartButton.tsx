@@ -31,3 +31,4 @@ export const AddToCartButton = ({ product }: AddToCartButtonProps) => {
   );
 };
 
+
